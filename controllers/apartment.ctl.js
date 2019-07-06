@@ -118,4 +118,26 @@ module.exports = {
             res.status(404).send(`{"result": "Failure", "params":{"email": "${req.body.email}", "id": "${req.query._id}", "error": ${JSON.stringify(err)}}`);
         });     
     },
+    updatePrize: async (req, res) => {
+        const { _id = null, address = null, owner = null, phone = null, monthly_payment = null,tenants = null} = req.body
+        apartment.find({address: address})
+        .then( result => {
+            result[0].tenants.forEach(element => {
+                if (element.name === tenants.name){
+                    apartment.updateOne({address: address, tenants: {$elemMatch: {name: tenants.name}}}, {'$set': {
+                        'tenants.$.prize':tenants.prize
+                    }}).then(result =>{
+                        if(result && result.nModified > 0){
+                            res.status(200).send(`{"result": "Success", "params": {"name": "${tenants.name}", "prize": "${tenants.prize}"}}`);
+                        }  
+                        else{
+                            res.status(404).send(`{"result": "Failure", "params": {"name": "${tenants.name}", "prize": "${tenants.prize}"}}`);
+                        }
+                    }).catch(err => {
+                        res.status(404).send(`"error": ${JSON.stringify(err)}`)
+                    })               
+                }
+            })
+        })
+    }
 }

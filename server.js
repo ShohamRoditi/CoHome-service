@@ -26,6 +26,8 @@ app.post('/addApartment', apartmentCtl.addApartment);
 app.put('/updateExpenses', apartmentCtl.updateExpenses);
 app.put('/updateRating', apartmentCtl.updateRating);
 app.delete('/deleteTenant', apartmentCtl.deleteTenant);
+app.put('/updatePrize',apartmentCtl.updatePrize);
+
 
 /***  pics routes***/
 app.get('/getUsersPic', userCtl.getUsersPic);
